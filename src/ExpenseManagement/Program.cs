@@ -17,8 +17,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Add ExpenseService
+// Add Application Services
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 var app = builder.Build();
 
