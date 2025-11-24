@@ -1,0 +1,34 @@
+# Build artifacts
+bin/
+obj/
+publish/
+*.user
+*.suo
+*.userprefs
+*DS_Store
+
+# Visual Studio
+.vs/
+.vscode/
+
+# .NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# Don't ignore app.zip - needed for deployment
+!app.zip

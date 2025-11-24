@@ -1,0 +1,55 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="header">
+    <div class="container">
+        <h1>Expense Management System</h1>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="container">
+        <div class="error-banner">
+            <h3>⚠️ Error Connecting to Database</h3>
+            <p><strong>@Model.ErrorMessage</strong></p>
+            <p>@Model.ErrorDetails</p>
+            <p><small>Displaying sample data instead. Please check your connection settings and managed identity configuration.</small></p>
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="card">
+        <h2>Welcome to Expense Management</h2>
+        <p>Manage your expenses, submit for approval, and track your spending all in one place.</p>
+        
+        <div class="button-group">
+            <a href="/AddExpense" class="btn btn-primary">➕ Add New Expense</a>
+            <a href="/ViewExpenses" class="btn btn-primary">📋 View All Expenses</a>
+            <a href="/ApproveExpenses" class="btn btn-success">✓ Approve Expenses</a>
+            <a href="/swagger" class="btn btn-primary">📚 API Documentation</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Quick Statistics</h2>
+        <div class="button-group">
+            <div style="flex: 1; padding: 20px; background: var(--light-gray); border-radius: 8px; text-align: center;">
+                <h3 style="color: var(--primary-color); margin-bottom: 10px;">@Model.TotalExpenses</h3>
+                <p>Total Expenses</p>
+            </div>
+            <div style="flex: 1; padding: 20px; background: var(--light-gray); border-radius: 8px; text-align: center;">
+                <h3 style="color: var(--warning-color); margin-bottom: 10px;">@Model.PendingExpenses</h3>
+                <p>Pending Approval</p>
+            </div>
+            <div style="flex: 1; padding: 20px; background: var(--light-gray); border-radius: 8px; text-align: center;">
+                <h3 style="color: var(--success-color); margin-bottom: 10px;">@Model.ApprovedExpenses</h3>
+                <p>Approved</p>
+            </div>
+        </div>
+    </div>
+</div>

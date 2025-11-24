@@ -1,0 +1,89 @@
+@page
+@model ViewExpensesModel
+@{
+    ViewData["Title"] = "View Expenses";
+}
+
+<div class="header">
+    <div class="container">
+        <h1>Expense Management System</h1>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="container">
+        <div class="error-banner">
+            <h3>⚠️ Error</h3>
+            <p><strong>@Model.ErrorMessage</strong></p>
+            <p>@Model.ErrorDetails</p>
+            <p><small>Displaying sample data instead.</small></p>
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="card">
+        <h2>Expenses</h2>
+        
+        <div class="filter-box">
+            <form method="get">
+                <label for="filter">Filter:</label>
+                <input type="text" id="filter" name="filter" class="form-control" placeholder="Search expenses..." value="@Model.Filter" />
+                <button type="submit" class="btn btn-primary mt-20">Apply Filter</button>
+                <a href="/ViewExpenses" class="btn btn-danger mt-20">Clear</a>
+            </form>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var expense in Model.Expenses)
+                    {
+                        <tr>
+                            <td>@expense.ExpenseDate.ToString("dd/MM/yyyy")</td>
+                            <td>@expense.CategoryName</td>
+                            <td>£@expense.AmountDecimal.ToString("N2")</td>
+                            <td>
+                                <span class="status-badge status-@expense.StatusName.ToLower()">
+                                    @expense.StatusName
+                                </span>
+                            </td>
+                            <td>@expense.Description</td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (expense.StatusName == "Draft")
+                                    {
+                                        <form method="post" asp-page-handler="Submit" style="display:inline;">
+                                            <input type="hidden" name="expenseId" value="@expense.ExpenseId" />
+                                            <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                        </form>
+                                    }
+                                    <form method="post" asp-page-handler="Delete" style="display:inline;">
+                                        <input type="hidden" name="expenseId" value="@expense.ExpenseId" />
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="button-group mt-20">
+            <a href="/AddExpense" class="btn btn-primary">Add New Expense</a>
+            <a href="/Index" class="btn btn-danger">Back to Home</a>
+        </div>
+    </div>
+</div>
