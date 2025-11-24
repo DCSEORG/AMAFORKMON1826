@@ -1,0 +1,91 @@
+@page
+@model ApproveExpensesModel
+@{
+    ViewData["Title"] = "Approve Expenses";
+}
+
+<div class="header">
+    <div class="container">
+        <h1>Expense Management System</h1>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="container">
+        <div class="error-banner">
+            <h3>⚠️ Error</h3>
+            <p><strong>@Model.ErrorMessage</strong></p>
+            <p>@Model.ErrorDetails</p>
+            <p><small>Displaying sample data instead.</small></p>
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="card">
+        <h2>Approve Expenses</h2>
+        <p><strong>Pending expenses:</strong></p>
+        
+        <div class="filter-box">
+            <form method="get">
+                <label for="filter">Filter:</label>
+                <input type="text" id="filter" name="filter" class="form-control" placeholder="Search pending expenses..." value="@Model.Filter" />
+                <button type="submit" class="btn btn-primary mt-20">Apply Filter</button>
+                <a href="/ApproveExpenses" class="btn btn-danger mt-20">Clear</a>
+            </form>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>User</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.PendingExpenses.Any())
+                    {
+                        @foreach (var expense in Model.PendingExpenses)
+                        {
+                            <tr>
+                                <td>@expense.ExpenseDate.ToString("dd/MM/yyyy")</td>
+                                <td>@expense.CategoryName</td>
+                                <td>£@expense.AmountDecimal.ToString("N2")</td>
+                                <td>@expense.UserName</td>
+                                <td>@expense.Description</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <form method="post" asp-page-handler="Approve" style="display:inline;">
+                                            <input type="hidden" name="expenseId" value="@expense.ExpenseId" />
+                                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                        </form>
+                                        <form method="post" asp-page-handler="Reject" style="display:inline;">
+                                            <input type="hidden" name="expenseId" value="@expense.ExpenseId" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No pending expenses to approve</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="button-group mt-20">
+            <a href="/Index" class="btn btn-danger">Back to Home</a>
+        </div>
+    </div>
+</div>

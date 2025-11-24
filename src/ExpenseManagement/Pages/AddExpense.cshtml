@@ -1,0 +1,61 @@
+@page
+@model AddExpenseModel
+@{
+    ViewData["Title"] = "Add Expense";
+}
+
+<div class="header">
+    <div class="container">
+        <h1>Expense Management System</h1>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="container">
+        <div class="error-banner">
+            <h3>⚠️ Error</h3>
+            <p><strong>@Model.ErrorMessage</strong></p>
+            <p>@Model.ErrorDetails</p>
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="card">
+        <h2>Add Expense</h2>
+        
+        <form method="post">
+            <div class="form-group">
+                <label for="Amount">Amount (£):</label>
+                <input type="number" step="0.01" class="form-control" id="Amount" name="Amount" required />
+            </div>
+            
+            <div class="form-group">
+                <label for="ExpenseDate">Date:</label>
+                <input type="date" class="form-control" id="ExpenseDate" name="ExpenseDate" required />
+            </div>
+            
+            <div class="form-group">
+                <label for="CategoryId">Category:</label>
+                <select class="form-control" id="CategoryId" name="CategoryId" required>
+                    <option value="">Select a category...</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="Description">Description:</label>
+                <textarea class="form-control" id="Description" name="Description" rows="4"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/Index" class="btn btn-danger">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
